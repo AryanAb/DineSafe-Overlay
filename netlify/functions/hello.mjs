@@ -27,7 +27,7 @@ export async function handler(event, context) {
   })[0]?.item;
 
   const id = establishment["Establishment ID"];
-  const url = `https://www.toronto.ca/community-people/health-wellness-care/health-programs-advice/food-safety/dinesafe/#infraction_details/${id}/0`;
+  const url = `https://www.toronto.ca/community-people/health-wellness-care/health-programs-advice/food-safety/dinesafe/#establishment/${id}`;
   
   const response = await fetch(`https://secure.toronto.ca/opendata/ds/est_summary/v1?format=json&est_id=${id}`);
   const json = await response.json();

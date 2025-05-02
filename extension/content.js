@@ -51,6 +51,7 @@ function injectRatingBadge(score, url) {
 
   const badge = document.createElement('a');
   badge.setAttribute('href', url);
+  badge.setAttribute('target', '_blank')
   if (score < 2.5) {
     badge.innerText = '🟢';
   } else if (score < 6.5) {
