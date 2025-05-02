@@ -7,7 +7,11 @@ export async function handler(event, context) {
 
   if (!name || !address) {
     return {
-      statusCode: 400
+      statusCode: 400,
+      headers: {
+        "Access-Control-Allow-Origin": "*",  // Allow all origins
+        "Access-Control-Allow-Headers": "Content-Type"
+      },
     };
   }
 
@@ -32,6 +36,10 @@ export async function handler(event, context) {
   if (json.inspections[0].insStatus === 'Closed') {
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",  // Allow all origins
+        "Access-Control-Allow-Headers": "Content-Type"
+      },
       body: JSON.stringify({ url, score: 99 })
     }
   }
@@ -53,6 +61,10 @@ export async function handler(event, context) {
 
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*",  // Allow all origins
+      "Access-Control-Allow-Headers": "Content-Type"
+    },
     body: JSON.stringify({ url, score: totalScore }),
   };
 }
