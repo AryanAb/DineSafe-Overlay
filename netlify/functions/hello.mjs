@@ -40,7 +40,7 @@ export async function handler(event, context) {
   let multiplier = 1.0;
   for (const inspection of json.inspections) {
     let inspectionScore = 0;
-    for (const infraction of inspection.infractions) {
+    for (const infraction of inspection.infractions ?? []) {
       if (infraction.infDtl[0].infType === 'S - Significant') {
         inspectionScore += 3;
       } else {
