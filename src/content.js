@@ -1,5 +1,6 @@
 import KDBush from "kdbush";
 import * as geokdbush from 'geokdbush';
+import Fuse from 'fuse.js';
 
 let lastUrl = location.href;
 
@@ -8,12 +9,17 @@ new MutationObserver(async () => {
   if (currentUrl !== lastUrl) {
     lastUrl = currentUrl;
     if (/^https:\/\/www\.google\.[a-z.]+\/maps\/place/.test(currentUrl)) {
-      if (isEatingEstablishment()) {
-        const { name, address, lat, lon } = getSelectedEstablishmentInfo(location.href);
-        const { estId } = await getEstablishmentIdFromInfo(name, address, lat, lon);;
-        const { url, score } = await getInspectionDetails(estId);
-        injectRatingBadge(score, url);
-      }
+      // it usually takes half a second for the new sidebar to fully load, so wait a bit
+      setTimeout(async () => {
+        if (isEatingEstablishment()) {
+          const { name, address, lat, lon } = getSelectedEstablishmentInfo(location.href);
+          const result = await getEstablishmentIdFromInfo(name, address, lat, lon);
+          if (result) {
+            const { url, score } = await getInspectionDetails(result.estId);
+            injectRatingBadge(score, url);
+          }
+        }
+      }, 250);
     }
   }
 }).observe(document, { subtree: true, childList: true });
@@ -29,8 +35,8 @@ function isEatingEstablishment() {
 function getSelectedEstablishmentInfo(currentUrl) {
   const regex = /!3d([-.\d]+)!4d([-.\d]+)/;
   const match = currentUrl.match(regex);
-  var lat = undefined;
-  var lon = undefined;
+  let lat = undefined;
+  let lon = undefined;
   if (match) {
     lat = parseFloat(match[1]);
     lon = parseFloat(match[2]);
@@ -55,10 +61,15 @@ async function getEstablishmentIdFromInfo(name, address, lat, lon) {
   index.finish();
   const nearestIds = geokdbush.around(index, lon, lat, 50, 0.05);
   const nearest = nearestIds.map(id => data[id]);
-  console.log(nearest);
-  
-  // TODO: Add fuzzy matching with name and address to to ensure we are returning the right establishment
-  return nearest[0];
+  const fuse = new Fuse(nearest, { keys: ['estName', 'addrFull'] });
+  const result = fuse.search({
+    $and: [
+      { 'estName': name },
+      { 'addrFull': address },  
+    ],
+  })[0]?.item;
+
+  return result;
 }
 
 async function getInspectionDetails(id) {
@@ -102,7 +113,8 @@ function injectRatingBadge(score, url) {
 
   const badge = document.createElement('a');
   badge.setAttribute('href', url);
-  badge.setAttribute('target', '_blank')
+  badge.setAttribute('target', '_blank');
+  badge.setAttribute('style', 'font-size: 0.875rem; text-decoration: none;')
   if (score < 2.5) {
     badge.innerText = '🟢';
   } else if (score < 6.5) {
@@ -111,5 +123,4 @@ function injectRatingBadge(score, url) {
     badge.innerText = '🔴';
   }
   newDiv.appendChild(badge);
-  console.log('badge injected');
 }

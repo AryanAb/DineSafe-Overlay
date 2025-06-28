@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
+    minify: false,
     rollupOptions: {
       input: {
         background: 'src/background.js',

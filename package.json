@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "fuse": "^0.12.1",
+    "fuse.js": "^7.1.0",
     "geokdbush": "^2.0.1",
     "kdbush": "^4.0.2",
     "vite": "^6.3.5"

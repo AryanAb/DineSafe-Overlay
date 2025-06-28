@@ -3,7 +3,7 @@
   "description": "Check health inspection records for restaurants and bars - THIS EXTENSION IS FOR BETA TESTING",
   "version": "0.1",
   "permissions": ["scripting", "storage"],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": ["https://www.google.ca/maps/*", "https://secure.toronto.ca/opendata/ds/*"],
   "background": {
     "service_worker": "background.js"
   },
