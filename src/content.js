@@ -9,7 +9,7 @@ new MutationObserver(async () => {
   if (currentUrl !== lastUrl) {
     lastUrl = currentUrl;
     if (/^https:\/\/www\.google\.[a-z.]+\/maps\/place/.test(currentUrl)) {
-      // it usually takes half a second for the new sidebar to fully load, so wait a bit
+      // it usually takes a bit of time for the new sidebar to fully load, so just wait it out
       setTimeout(async () => {
         if (isEatingEstablishment()) {
           const { name, address, lat, lon } = getSelectedEstablishmentInfo(location.href);
@@ -115,9 +115,9 @@ function injectRatingBadge(score, url) {
   badge.setAttribute('href', url);
   badge.setAttribute('target', '_blank');
   badge.setAttribute('style', 'font-size: 0.875rem; text-decoration: none;')
-  if (score < 2.5) {
+  if (score <= 3 ) {
     badge.innerText = '🟢';
-  } else if (score < 6.5) {
+  } else if (score <= 6.5) {
     badge.innerText = '🟡';
   } else {
     badge.innerText = '🔴';
