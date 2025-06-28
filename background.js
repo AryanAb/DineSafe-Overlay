@@ -1,0 +1,26 @@
+const CACHE_TTL = 1000 * 60 * 60 * 24 * 7; // One week
+
+chrome.runtime.onInstalled.addListener(() => {
+  initializeEstablishmentsCache();
+});
+
+chrome.runtime.onStartup.addListener(() => {
+  initializeEstablishmentsCache();
+});
+
+async function fetchEstablishments() {
+  const ALPHABET = ['0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  const responses = await Promise.all(ALPHABET.map(letter => fetch(`https://secure.toronto.ca/opendata/ds/establishments/v1?format=json&first_letter=${letter}`)));
+  const jsons = await Promise.all(responses.map(response => response.json()));
+  return jsons.flat();
+}
+
+function initializeEstablishmentsCache() {
+  chrome.storage.local.get(['data', 'lastFetched'], async (items) => {
+    const now = Date.now();
+    if (items.data == undefined || items.lastFetched == undefined || now - items.lastFetched > CACHE_TTL) {
+      const establishments = await fetchEstablishments();
+      chrome.storage.local.set({ data: establishments, lastFetched: now });
+    }
+  });
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Health Inspector - BETA",
+  "description": "Check health inspection records for restaurants and bars - THIS EXTENSION IS FOR BETA TESTING",
+  "version": "0.1",
+  "permissions": ["scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.ca/maps/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "hello.html",
+    "default_icon": "icon.png"
+  }
+}
