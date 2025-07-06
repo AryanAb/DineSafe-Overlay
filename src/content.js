@@ -27,7 +27,7 @@ new MutationObserver(async () => {
 function isEatingEstablishment() {
   const typeBtn = document.getElementsByClassName('DkEaL ')
   const type = typeBtn[0]?.textContent?.toLocaleLowerCase();
-  if (type?.includes('bar') || type?.includes('pub') || type?.includes('restaurant') || type?.includes('cafe') || type?.includes('ice cream')) {
+  if (type?.includes('bar') || type?.includes('pub') || type?.includes('restaurant') || type?.includes('cafe') || type?.includes('ice cream') || type?.includes('diner') || type?.includes('coffee shop')) {
     return true;
   }
 }
@@ -59,13 +59,27 @@ async function getEstablishmentIdFromInfo(name, address, lat, lon) {
     index.add(lon, lat);
   }
   index.finish();
-  const nearestIds = geokdbush.around(index, lon, lat, 50, 0.05);
+  const nearestIds = geokdbush.around(index, lon, lat, 50, 0.075);
   const nearest = nearestIds.map(id => data[id]);
   const fuse = new Fuse(nearest, { keys: ['estName', 'addrFull'] });
-  const result = fuse.search({
+  let result = fuse.search({
     $and: [
       { 'estName': name },
-      { 'addrFull': address },  
+      { 'addrFull': address },
+    ],
+  })[0]?.item;
+  
+  if (result !== undefined) {
+    return result;
+  }
+
+  // Some establishments have additional text included in their name
+  // so strip that text and try again
+  const parsedName = name.includes('|') ? name.split('|')[0] : name.split('-')[0];
+  result = fuse.search({
+    $and: [
+      { 'estName': parsedName },
+      { 'addrFull': address },
     ],
   })[0]?.item;
 
@@ -74,7 +88,7 @@ async function getEstablishmentIdFromInfo(name, address, lat, lon) {
 
 async function getInspectionDetails(id) {
   const url = `https://www.toronto.ca/community-people/health-wellness-care/health-programs-advice/food-safety/dinesafe/#establishment/${id}`;
-  
+
   const response = await fetch(`https://secure.toronto.ca/opendata/ds/est_summary/v1?format=json&est_id=${id}`);
   const json = await response.json();
 
@@ -115,7 +129,7 @@ function injectRatingBadge(score, url) {
   badge.setAttribute('href', url);
   badge.setAttribute('target', '_blank');
   badge.setAttribute('style', 'font-size: 0.875rem; text-decoration: none;')
-  if (score <= 3 ) {
+  if (score <= 3) {
     badge.innerText = '🟢';
   } else if (score <= 6.5) {
     badge.innerText = '🟡';

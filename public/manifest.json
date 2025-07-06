@@ -1,6 +1,6 @@
 {
-  "name": "Health Inspector - BETA",
-  "description": "Check health inspection records for restaurants and bars - THIS EXTENSION IS FOR BETA TESTING",
+  "name": "DineSafe Overlay",
+  "description": "Check health inspection records for restaurants and bars in Toronto",
   "version": "0.1",
   "permissions": ["scripting", "storage"],
   "host_permissions": ["https://www.google.ca/maps/*", "https://secure.toronto.ca/opendata/ds/*"],

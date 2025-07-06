@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "debug": "npx vite build --minify=false",
+    "build": "npx vite build",
+    "release": "tar -a -c -f dist.zip ./dist"
+  },
   "dependencies": {
     "fuse.js": "^7.1.0",
     "geokdbush": "^2.0.1",
