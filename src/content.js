@@ -17,6 +17,8 @@ new MutationObserver(async () => {
           if (result) {
             const { url, score } = await getInspectionDetails(result.estId);
             injectRatingBadge(score, url);
+          } else {
+            injectUnknownBadge();
           }
         }
       }, 250);
@@ -136,5 +138,23 @@ function injectRatingBadge(score, url) {
   } else {
     badge.innerText = '🔴';
   }
+  newDiv.appendChild(badge);
+}
+
+function injectUnknownBadge() {
+  const ratingDiv = document.getElementsByClassName('fontBodyMedium dmRWX')[0];
+  const newDiv = document.createElement('div');
+  newDiv.style.display = 'flex';
+  newDiv.style.flexDirection = 'row';
+  newDiv.style.justifyContent = 'space-between';
+  newDiv.style.alignItems = 'center';
+  ratingDiv.parentNode.insertBefore(newDiv, ratingDiv);
+  newDiv.appendChild(ratingDiv);
+
+  const badge = document.createElement('a');
+  badge.setAttribute('href', 'https://www.toronto.ca/community-people/health-wellness-care/health-programs-advice/food-safety/dinesafe/#explore_all_establishments/0');
+  badge.setAttribute('target', '_blank');
+  badge.setAttribute('style', 'font-size: 0.875rem; text-decoration: none;')
+  badge.innerText = '❓';
   newDiv.appendChild(badge);
 }
