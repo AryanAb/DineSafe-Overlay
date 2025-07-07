@@ -35,8 +35,9 @@ function isEatingEstablishment() {
 }
 
 function getSelectedEstablishmentInfo(currentUrl) {
-  const regex = /!3d([-.\d]+)!4d([-.\d]+)/;
-  const match = currentUrl.match(regex);
+  const regex = /!3d([-.\d]+)!4d([-.\d]+)/g;
+  const matches = Array.from(currentUrl.matchAll(regex));
+  const match = matches[matches.length - 1];
   let lat = undefined;
   let lon = undefined;
   if (match) {
