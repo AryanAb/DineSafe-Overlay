@@ -3,8 +3,7 @@
         DineSafe Overlay
         <br clear="all" />
         <img src="https://img.shields.io/badge/version-0.1-blue" alt="version" align="left" />
-        <a href="https://github.com/AryanAb/health-inspector/actions"><img src="https://img.shields.io/github/actions/workflow/status/AryanAb/health-inspector/playwright.yml
-        " alt="test status" align="right"/></a>
+        <a href="https://github.com/AryanAb/health-inspector/actions"><img src="https://img.shields.io/github/actions/workflow/status/AryanAb/health-inspector/playwright.yml" alt="test status" align="right"/></a>
     </h1>
 </div>
 
