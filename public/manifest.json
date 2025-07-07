@@ -1,7 +1,7 @@
 {
   "name": "DineSafe Overlay",
   "description": "Check health inspection records for restaurants and bars in Toronto",
-  "version": "0.1",
+  "version": "0.2",
   "permissions": ["scripting", "storage"],
   "host_permissions": ["https://www.google.ca/maps/*", "https://secure.toronto.ca/opendata/ds/*"],
   "background": {

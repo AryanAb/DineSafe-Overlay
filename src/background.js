@@ -19,7 +19,6 @@ async function fetchEstablishments() {
     res = res.concat(jsons.flat());
     await new Promise(resolve => setTimeout(resolve, 500));
   }
-  console.log(res);
   return res;
 }
 

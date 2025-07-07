@@ -2,7 +2,7 @@
   "scripts": {
     "debug": "npx vite build --minify=false",
     "build": "npx vite build",
-    "release": "tar -a -c -f dist.zip ./dist",
+    "release": "tar -a -c -f dist.zip dist",
     "e2e": "npx playwright test"
   },
   "dependencies": {
