@@ -131,6 +131,7 @@ function injectRatingBadge(score, url) {
   badge.setAttribute('href', url);
   badge.setAttribute('target', '_blank');
   badge.setAttribute('style', 'font-size: 0.875rem; text-decoration: none;')
+  badge.setAttribute('data-testid', 'DineSafeOverlay-badge');
   if (score <= 3) {
     badge.innerText = '🟢';
   } else if (score <= 6.5) {
@@ -155,6 +156,7 @@ function injectUnknownBadge() {
   badge.setAttribute('href', 'https://www.toronto.ca/community-people/health-wellness-care/health-programs-advice/food-safety/dinesafe/#explore_all_establishments/0');
   badge.setAttribute('target', '_blank');
   badge.setAttribute('style', 'font-size: 0.875rem; text-decoration: none;')
+  badge.setAttribute('data-testid', 'DineSafeOverlay-badge');
   badge.innerText = '❓';
   newDiv.appendChild(badge);
 }

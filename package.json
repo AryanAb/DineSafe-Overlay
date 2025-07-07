@@ -2,12 +2,17 @@
   "scripts": {
     "debug": "npx vite build --minify=false",
     "build": "npx vite build",
-    "release": "tar -a -c -f dist.zip ./dist"
+    "release": "tar -a -c -f dist.zip ./dist",
+    "e2e": "npx playwright test"
   },
   "dependencies": {
     "fuse.js": "^7.1.0",
     "geokdbush": "^2.0.1",
     "kdbush": "^4.0.2",
     "vite": "^6.3.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.53.2",
+    "@types/node": "^24.0.10"
   }
 }
