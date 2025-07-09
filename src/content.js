@@ -18,7 +18,7 @@ new MutationObserver(async () => {
             const { url, score } = await getInspectionDetails(result.estId);
             injectRatingBadge(score, url);
           } else {
-            injectUnknownBadge();
+            injectRatingBadge(null, null);
           }
         }
       }, 250);
@@ -125,39 +125,30 @@ function injectRatingBadge(score, url) {
   newDiv.style.flexDirection = 'row';
   newDiv.style.justifyContent = 'space-between';
   newDiv.style.alignItems = 'center';
+  newDiv.setAttribute('class', 'DineSafeOverlay-container');
+  const containers = ratingDiv.getElementsByClassName('DineSafeOverlay-container').length;
+  // remove any existing badges so we don't show two badges at the same time
+  if (containers.length > 0) {
+    for (const container of containers) {
+      ratingDiv.parentNode.removeChild(container);
+    }
+  }
   ratingDiv.parentNode.insertBefore(newDiv, ratingDiv);
   newDiv.appendChild(ratingDiv);
 
   const badge = document.createElement('a');
   badge.setAttribute('href', url);
   badge.setAttribute('target', '_blank');
-  badge.setAttribute('style', 'font-size: 0.875rem; text-decoration: none;')
+  badge.setAttribute('style', 'font-size: 1.25rem; text-decoration: none;');
   badge.setAttribute('data-testid', 'DineSafeOverlay-badge');
-  if (score <= 3) {
+  if (score === null) {
+    badge.innerText = '❓';
+  } else if (score <= 3) {
     badge.innerText = '🟢';
   } else if (score <= 6.5) {
     badge.innerText = '🟡';
   } else {
     badge.innerText = '🔴';
   }
-  newDiv.appendChild(badge);
-}
-
-function injectUnknownBadge() {
-  const ratingDiv = document.getElementsByClassName('fontBodyMedium dmRWX')[0];
-  const newDiv = document.createElement('div');
-  newDiv.style.display = 'flex';
-  newDiv.style.flexDirection = 'row';
-  newDiv.style.justifyContent = 'space-between';
-  newDiv.style.alignItems = 'center';
-  ratingDiv.parentNode.insertBefore(newDiv, ratingDiv);
-  newDiv.appendChild(ratingDiv);
-
-  const badge = document.createElement('a');
-  badge.setAttribute('href', 'https://www.toronto.ca/community-people/health-wellness-care/health-programs-advice/food-safety/dinesafe/#explore_all_establishments/0');
-  badge.setAttribute('target', '_blank');
-  badge.setAttribute('style', 'font-size: 0.875rem; text-decoration: none;')
-  badge.setAttribute('data-testid', 'DineSafeOverlay-badge');
-  badge.innerText = '❓';
   newDiv.appendChild(badge);
 }
