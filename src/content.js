@@ -139,16 +139,16 @@ function injectRatingBadge(score, url) {
   const badge = document.createElement('a');
   badge.setAttribute('href', url);
   badge.setAttribute('target', '_blank');
-  badge.setAttribute('style', 'font-size: 1.25rem; text-decoration: none;');
+  badge.setAttribute('style', 'width: 1.25rem; height: 1.25rem; font-size: 1.25rem; text-decoration: none; border-radius: 100%;');
   badge.setAttribute('data-testid', 'DineSafeOverlay-badge');
   if (score === null) {
     badge.innerText = '❓';
   } else if (score <= 3) {
-    badge.innerText = '🟢';
+    badge.style.backgroundColor = '#329627';
   } else if (score <= 6.5) {
-    badge.innerText = '🟡';
+    badge.style.backgroundColor = '#deb928';
   } else {
-    badge.innerText = '🔴';
+    badge.style.backgroundColor = '#b53422';
   }
   newDiv.appendChild(badge);
 }
